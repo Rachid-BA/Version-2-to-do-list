@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>To-Do (Vanilla JS + Tailwind)</title>
+
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind: use class-based dark mode -->
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = { darkMode: 'class' };
+    </script>
+
+    <!-- Your optional CSS (kept minimal) -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- App script (deferred so <body> contains ONLY #app) -->
+    <script defer src="app.js"></script>
+  </head>
+
+  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-white dark:from-slate-950 dark:to-slate-900">
+    <!-- Body contains ONLY this root; UI is built via JS -->
+    <div id="app"></div>
+  </body>
+</html>

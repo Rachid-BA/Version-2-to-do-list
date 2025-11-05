@@ -1,0 +1,5 @@
+/* Optional: tiny accessibility touch; Tailwind handles most styling */
+:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.8); /* indigo */
+  outline-offset: 2px;
+}
