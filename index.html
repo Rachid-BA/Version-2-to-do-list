@@ -2,26 +2,89 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>To-Do (Vanilla JS + Tailwind)</title>
-
-    <!-- Tailwind via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configure Tailwind: use class-based dark mode -->
-    <script>
-      window.tailwind = window.tailwind || {};
-      window.tailwind.config = { darkMode: 'class' };
-    </script>
-
-    <!-- Your optional CSS (kept minimal) -->
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>To-Do List</title>
     <link rel="stylesheet" href="styles.css" />
-
-    <!-- App script (deferred so <body> contains ONLY #app) -->
-    <script defer src="app.js"></script>
+    <!-- Head: early init script -->
+    <script>
+      (function () {
+        try {
+          var html = document.documentElement;
+          var body = document.body || document.getElementsByTagName('body')[0];
+          var mode = localStorage.getItem('themeMode') || 'auto';
+          var last = localStorage.getItem('themeLast');
+    
+          var night = last === 'night';
+    
+          // Normalize and apply classes
+          html.classList.remove('theme-day','theme-night','dark');
+          if (body) body.classList.remove('theme-day','theme-night','dark');
+          html.classList.add(night ? 'theme-night' : 'theme-day');
+          if (body) body.classList.add(night ? 'theme-night' : 'theme-day');
+    
+          // Synchronize Tailwind dark mode
+          html.classList.toggle('dark', night);
+          if (body) body.classList.toggle('dark', night);
+    
+          html.setAttribute('data-theme-mode', mode);
+        } catch (e) {
+          /* no-op */
+        }
+      })();
+    </script>
   </head>
+  <body>
+    <!-- Fixed gradient layer behind all content -->
+    <div class="theme-gradient-layer" aria-hidden="true"></div>
 
-  <body class="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-white dark:from-slate-950 dark:to-slate-900">
-    <!-- Body contains ONLY this root; UI is built via JS -->
-    <div id="app"></div>
+    <div class="theme-wrapper" role="presentation" aria-hidden="false">
+      <header class="app-header">
+        <div class="theme-controls">
+          <button
+            id="themeToggle"
+            class="theme-toggle"
+            role="switch"
+            aria-label="Toggle theme: Sun/Moon"
+            aria-checked="false"
+            title="Toggle Day/Night"
+          >
+            🌞
+          </button>
+          <button
+            id="autoMode"
+            class="auto-mode"
+            aria-label="Use Auto Mode"
+            title="Use Auto Mode"
+          >
+            Auto
+          </button>
+        </div>
+      </header>
+
+      <!-- Glow wrappers: pointer-events none; inner badges handle interactions -->
+      <div class="badge-wrapper sun" aria-hidden="true">
+        <div id="sunBadge" class="badge sun-badge" aria-hidden="true" tabindex="-1">🌞</div>
+      </div>
+      <div class="badge-wrapper moon" aria-hidden="true">
+        <div id="moonBadge" class="badge moon-badge" aria-hidden="true" tabindex="-1">🌜</div>
+      </div>
+
+      <!-- To-Do app content sits above icons and background -->
+      <main id="todoContainer" class="todo-container app-content" tabindex="-1" aria-label="To-Do List">
+        <!-- Tailwind via CDN -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Configure Tailwind: use class-based dark mode -->
+        <script>
+          window.tailwind = window.tailwind || {};
+          window.tailwind.config = { darkMode: 'class' };
+        </script>
+
+        <!-- Your optional CSS (kept minimal) -->
+        <link rel="stylesheet" href="styles.css" />
+
+        <!-- App script (deferred so <body> contains ONLY #app) -->
+        <script defer src="app.js"></script>
+      </main>
+    </div>
   </body>
 </html>

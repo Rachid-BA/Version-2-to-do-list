@@ -1,5 +1,227 @@
+/* Theme tokens */
+:root {
+  --bg-start: #eafff6; /* day mint */
+  --bg-end: #ffffff;   /* day white */
+  --text: #0b1a1a;
+  --muted: #3a4a4a;
+  --card-bg: #ffffff;
+  --border: #d6e6e6;
+  --button-bg: #1aa37a;
+  --button-text: #ffffff;
+  --accent: #2cd3a7;
+  --glow: rgba(44, 211, 167, 0.6);
+  --shadow: rgba(0, 0, 0, 0.12);
+  --badge-bg: #ffffff;
+
+  transition:
+    background 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease;
+}
+
+html.theme-day,
+body.theme-day {
+  --bg-start: #eafff6;
+  --bg-end: #ffffff;
+  --text: #0b1a1a;
+  --muted: #3a4a4a;
+  --card-bg: #ffffff;
+  --border: #d6e6e6;
+  --button-bg: #1aa37a;
+  --button-text: #ffffff;
+  --accent: #2cd3a7;
+  --glow: rgba(44, 211, 167, 0.6);
+  --shadow: rgba(0, 0, 0, 0.12);
+  --badge-bg: #ffffff;
+}
+
+html.theme-night,
+body.theme-night {
+  --bg-start: #0b1a3a; /* night navy */
+  --bg-end: #1b2856;   /* night indigo */
+  --text: #e6ecff;
+  --muted: #b7c2e6;
+  --card-bg: #203060;
+  --border: #33416a;
+  --button-bg: #4057a3;
+  --button-text: #e6ecff;
+  --accent: #7ea4ff;
+  --glow: rgba(126, 164, 255, 0.5);
+  --shadow: rgba(0, 0, 0, 0.3);
+  --badge-bg: #273a73;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: none; /* gradient moved to fixed layer */
+  color: var(--text);
+}
+
+/* Fixed gradient layer (behind everything) */
+.theme-gradient-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  will-change: background;
+  transition: background 300ms ease;
+}
+
+/* Theme wrapper should not block layout/content */
+.theme-wrapper {
+  position: relative;
+}
+
+/* Header & controls */
+.app-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 12px;
+  position: relative;
+  z-index: 10; /* above icons and canvas */
+}
+
+.theme-controls {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.theme-toggle,
+.auto-mode {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--button-bg);
+  color: var(--button-text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px var(--shadow);
+  transition:
+    background 300ms ease,
+    color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.theme-toggle:focus,
+.auto-mode:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Glow wrappers with no pointer events; badges at z-index: 5 */
+.badge-wrapper {
+  position: fixed;
+  top: 12px;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 5; /* exactly per spec */
+  filter: drop-shadow(0 0 12px var(--glow)) drop-shadow(0 6px 12px var(--shadow));
+}
+.badge-wrapper.sun { left: 12px; }
+.badge-wrapper.moon { right: 12px; }
+
+.badge {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  background: var(--badge-bg);
+  color: var(--text);
+  user-select: none;
+  will-change: transform, opacity;
+  transition: opacity 300ms ease, background 300ms ease, color 300ms ease, border-color 300ms ease;
+  pointer-events: auto;
+}
+
+/* Rise animations */
+@keyframes sun-rise {
+  from { transform: translateX(-120%) translateY(16px); opacity: 0; }
+  to   { transform: translateX(0) translateY(0); opacity: 1; }
+}
+@keyframes moon-rise {
+  from { transform: translateX(120%) translateY(16px); opacity: 0; }
+  to   { transform: translateX(0) translateY(0); opacity: 1; }
+}
+.animate-sun-rise { animation: sun-rise 450ms ease-in-out; }
+.animate-moon-rise { animation: moon-rise 450ms ease-in-out; }
+
+/* Parallax-ready container */
+.todo-container {
+  min-height: 60vh;
+  overflow: auto;
+  padding: 12px;
+  position: relative;
+  z-index: 10; /* above icons/canvas */
+}
+
+/* Component tokens */
+.card,
+.todo-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px var(--shadow);
+  color: var(--text);
+  transition: background 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+  position: relative;
+  z-index: 10; /* ensure content above background/icons */
+}
+
+input, textarea, select {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  transition: background 300ms ease, color 300ms ease, border-color 300ms ease;
+}
+
+button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 300ms ease, color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+button:hover {
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
 /* Optional: tiny accessibility touch; Tailwind handles most styling */
 :focus-visible {
   outline: 2px solid rgba(99, 102, 241, 0.8); /* indigo */
   outline-offset: 2px;
+}
+
+/* To-Do container/content sits above icons */
+.app-content {
+  position: relative;
+  z-index: 10;
+}
+
+.todo-container {
+  min-height: 60vh;
+  overflow: auto;
+  padding: 12px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Readable placeholders in both themes */
+::placeholder {
+  color: var(--muted);
+  opacity: 0.9;
 }

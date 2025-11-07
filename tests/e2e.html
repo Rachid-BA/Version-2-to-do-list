@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Theme E2E</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      body { padding: 16px; font-family: system-ui, sans-serif; }
+      #e2e-output > div { margin: 4px 0; }
+    </style>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="theme-controls">
+        <button id="themeToggle" class="theme-toggle" role="switch" aria-checked="false">🌞</button>
+        <button id="autoMode" class="auto-mode">Auto</button>
+      </div>
+    </header>
+    <div id="sunBadge" class="badge sun-badge" aria-hidden="true">🌞</div>
+    <div id="moonBadge" class="badge moon-badge" aria-hidden="true">🌜</div>
+    <main id="todoContainer" class="todo-container"></main>
+
+    <h1>Theme E2E Tests</h1>
+    <div id="e2e-output" role="status" aria-live="polite"></div>
+
+    <script src="../app.js"></script>
+    <script src="e2e.test.js"></script>
+  </body>
+</html>
